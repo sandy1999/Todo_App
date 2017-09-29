@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-
+    private static final String Warning_Ins= "Can't add empty TODO";
     EditText myeditText;
     TextView myText;
     MyDBHandler dbHandler;
@@ -31,17 +31,20 @@ public class MainActivity extends Activity {
     }
 
     public void addButtonClicked(View view){
-        Products products = new Products(myeditText.getText().toString());
+        String product = myeditText.getText().toString().trim();
+        if(!(product.equals("") || product.equals(Warning_Ins) )){
+        Products products = new Products(product);
         dbHandler.addProducts(products);
+
         printDatabase();
-//        String Text = myeditText.getText().toString();
-//        myText.setText(Text);
+        }else{
+            myeditText.setText(Warning_Ins);
+        }
     }
 
     public void deleteButtonClicked(View view){
         String inputText = myeditText.getText().toString();
         dbHandler.deleteProduct(inputText);
         printDatabase();
-//        myText.setText("deleteButtonWorks");
     }
 }
